@@ -3,74 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skronicles Animation Studio</title>
+    <title>Skronicles Pro - AI Storytelling Engine</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    
-    <button class="hide-controls" id="hideControlsBtn">Hide Controls</button>
-    
-    <div class="controls" id="controls">
-        <div class="control-group">
-            <label>Presets:</label>
-            <button class="preset-btn" data-preset="truecrime">True Crime</button>
-            <button class="preset-btn" data-preset="horror">Horror</button>
-            <button class="preset-btn" data-preset="mysterious">Mysterious</button>
-            <button class="preset-btn" data-preset="eerie">Eerie</button>
-            <button class="preset-btn" data-preset="dreamy">Dreamy</button>
-            <button class="preset-btn" data-preset="tension">Tension</button>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div>Analyzing Story Beats...</div>
         </div>
-        
-        <div class="control-group">
-            <label>Animation Style:</label>
-            <select id="animationStyle">
-                <option value="particles">Floating Particles</option>
-                <option value="stickman">Walking Stickman</option>
-                <option value="shadows">Shadow Figures</option>
-                <option value="glitch">Glitch Effect</option>
-                <option value="noir">Film Noir</option>
-                <option value="cosmic">Cosmic Flow</option>
-                <option value="rain">Rain Storm</option>
-                <option value="smoke">Smoke & Fog</option>
-            </select>
+    </div>
+
+    <button class="hide-panel-btn" id="hidePanelBtn">≡ HIDE PANEL</button>
+
+    <div class="story-panel" id="storyPanel">
+        <div class="panel-header">
+            <div class="panel-title">🎬 SKRONICLES PRO</div>
+            <div class="panel-subtitle">AI-Powered Storytelling Engine</div>
         </div>
-        
-        <div class="control-group">
-            <label>Particle Count: <span id="particleCountValue">150</span></label>
-            <input type="range" id="particleCount" min="50" max="400" value="150">
+
+        <div class="section">
+            <div class="section-title">📖 Story Input</div>
+            <textarea class="story-input" id="storyText" placeholder="Paste your story here and watch the AI analyze emotional beats, character moments, and dramatic tension...">In 1987, a small town in Oregon experienced something that still haunts residents today. Sarah Mitchell was walking home from her night shift when she noticed all the streetlights flickering in sequence. As she approached the old bridge, she saw a figure standing motionless in the fog. What happened next would change her life forever.</textarea>
+            
+            <div class="story-analysis" id="storyAnalysis">
+                <div class="beat-indicator">
+                    <span>Current Beat:</span>
+                    <span id="currentBeat">Setup</span>
+                </div>
+                <div class="beat-progress">
+                    <div class="beat-fill" id="beatProgress"></div>
+                </div>
+                <div class="beat-indicator">
+                    <span>Intensity:</span>
+                    <span id="beatIntensity">Building...</span>
+                </div>
+            </div>
         </div>
-        
-        <div class="control-group">
-            <label>Speed: <span id="speedValue">1</span></label>
-            <input type="range" id="speed" min="0.1" max="3" step="0.1" value="1">
+
+        <div class="section">
+            <div class="section-title">🎭 Story Presets</div>
+            <div class="preset-grid">
+                <button class="preset-btn active" data-preset="truecrime">🔍 True Crime</button>
+                <button class="preset-btn" data-preset="horror">👻 Horror</button>
+                <button class="preset-btn" data-preset="mysterious">🌙 Mystery</button>
+                <button class="preset-btn" data-preset="eerie">🌫️ Eerie</button>
+                <button class="preset-btn" data-preset="dreamy">✨ Dreamy</button>
+                <button class="preset-btn" data-preset="tension">⚡ Thriller</button>
+            </div>
         </div>
-        
-        <div class="control-group">
-            <label>Mood:</label>
-            <select id="mood">
-                <option value="dark">Dark</option>
-                <option value="mysterious">Mysterious</option>
-                <option value="eerie">Eerie</option>
-                <option value="dreamy">Dreamy</option>
-                <option value="tense">Tense</option>
-                <option value="truecrime">True Crime</option>
-                <option value="horror">Horror</option>
-            </select>
+
+        <div class="section">
+            <div class="section-title">🎬 Animation Style</div>
+            <div class="animation-selector">
+                <select id="animationStyleSelect">
+                    <option value="particles">🌟 Floating Particles</option>
+                    <option value="stickman">🚶 Walking Stickman</option>
+                    <option value="shadows">👤 Shadow Figures</option>
+                    <option value="glitch">📺 Glitch Effect</option>
+                    <option value="noir">🎭 Film Noir</option>
+                    <option value="cosmic">🌌 Cosmic Flow</option>
+                    <option value="rain">🌧️ Rain Storm</option>
+                    <option value="smoke">💨 Smoke & Fog</option>
+                </select>
+            </div>
         </div>
-        
-        <div class="control-group">
-            <label>Camera Effect:</label>
-            <select id="cameraEffect">
-                <option value="none">None</option>
-                <option value="zoom">Slow Zoom</option>
-                <option value="shake">Subtle Shake</option>
-                <option value="drift">Drift</option>
-            </select>
+
+        <div class="section">
+            <div class="section-title">⚙️ Live Controls</div>
+            <div class="controls-section">
+                <div class="control-item">
+                    <div class="control-label">Particles</div>
+                    <div class="control-input">
+                        <input type="range" id="particleCountSlider" min="50" max="400" value="150">
+                        <div class="control-value" id="particleDisplay">150</div>
+                    </div>
+                </div>
+                <div class="control-item">
+                    <div class="control-label">Speed</div>
+                    <div class="control-input">
+                        <input type="range" id="speedSlider" min="0.1" max="3" step="0.1" value="1">
+                        <div class="control-value" id="speedDisplay">1.0x</div>
+                    </div>
+                </div>
+                <div class="control-item">
+                    <div class="control-label">Intensity</div>
+                    <div class="control-input">
+                        <input type="range" id="intensitySlider" min="0.1" max="2" step="0.1" value="1">
+                        <div class="control-value" id="intensityDisplay">1.0</div>
+                    </div>
+                </div>
+                <div class="control-item">
+                    <div class="control-label">Camera</div>
+                    <div class="control-input">
+                        <select id="cameraSelect">
+                            <option value="none">Stable</option>
+                            <option value="shake">Shake</option>
+                            <option value="zoom">Zoom</option>
+                            <option value="drift">Drift</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <button id="exportBtn">Export Settings</button>
-        <button id="fullscreenBtn">Fullscreen</button>
+
+        <div class="action-buttons">
+            <button class="action-btn generate-btn" id="analyzeBtn">🚀 ANALYZE & GO</button>
+            <button class="action-btn export-btn" id="exportBtn">💾 EXPORT HD</button>
+        </div>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="stats-overlay">
+        <div class="section-title">📊 Performance</div>
+        <div class="stat-row">
+            <span class="stat-label">Hook Rating:</span>
+            <span class="stat-value" id="hookRating">87%</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Scene Changes:</span>
+            <span class="stat-value" id="sceneCount">6</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Story Beats:</span>
+            <span class="stat-value" id="beatCount">4</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Est. Views:</span>
+            <span class="stat-value" id="viewEstimate">1.2M</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">AI Status:</span>
+            <span class="stat-value" id="aiStatus">Active</span>
+        </div>
+    </div>
+
+    <div class="ai-badge">
+        🤖 AI STORYTELLING
     </div>
 
     <script src="config.js"></script>
